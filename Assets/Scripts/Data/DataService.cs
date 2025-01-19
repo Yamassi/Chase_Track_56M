@@ -24,9 +24,12 @@ namespace Orion.Data
                         new ItemData(3,"Seraphina",2500,ItemState.OnSale),
                         new ItemData(4,"Belzak",0,ItemState.OnSale),
                     }),
-                    Lighting = new Effect(new []{0,400,1000,1500,2000},new []{3,4,5,6,7}),
-                    Shield = new Effect(new []{0,400,1000,1500,2000},new []{5,6,7,8,9}),
-                    Fire = new Effect(new []{0,400,1000,1500,2000},new []{3,4,5,6,7}),
+                    Effects = new []
+                    {
+                        new EffectData(new []{100,400,1000,1500,2000},new []{3,4,5,6,7}),
+                        new EffectData(new []{100,400,1000,1500,2000},new []{5,6,7,8,9}),
+                        new EffectData(new []{100,400,1000,1500,2000},new []{3,4,5,6,7}),
+                    },
                     Missions = new TasksData(new List<TaskData>()
                     {
                         new TaskData(0,TaskState.Uncomplete,80),

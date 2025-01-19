@@ -10,80 +10,54 @@ namespace Orion.UI.Pages.Presenters
 {
     public class ShopPresenter : PagePresenter<ShopView>
     {
-        private const string ItemPrefabPath = "Prefabs/ShopItem";
-        private const string ItemsPath = "Images/Items/Item";
-        private readonly Dictionary<int, ShopItem> _items = new();
-        private IResourceFactory _resourceFactory;
-        private IResourceLoader _resourceLoader;
-        private int _currentItem;
-
-        [Inject]
-        public void Construct(IResourceLoader resourceLoader, IResourceFactory resourceFactory)
-        {
-            _resourceLoader = resourceLoader;
-            _resourceFactory = resourceFactory;
-        }
-
         public override void Initialize(IView<ShopView> view)
         {
             View = view.GetView();
+
+            RefreshEffects();
             
-            // var itemsData = DataService.PlayerData.Items.Items;
-            // for (var i = 0; i < itemsData.Count; i++)
-            // {
-            //     var character = CreateItem(itemsData[i]);
-            //     _items.Add(itemsData[i].Id, character);
-            // }
+            var effectsData = DataService.PlayerData.Effects;
+            
+            for (var i = 0; i < View.Effects.Length; i++)
+            {
+                int effectsLevel = effectsData[i].Level;
+                View.Effects[i].Initialize(i,
+                    TryToBuy,
+                    effectsData[i].Durations[effectsLevel],
+                    effectsData[i].Price[effectsLevel],
+                    effectsLevel+1);
+            }
         }
         public override void Clear()
         {
             
         }
-        private ShopItem CreateItem(ItemData itemData)
-        {
-            ShopItem item = _resourceFactory.Instantiate<ShopItem>(ItemPrefabPath, View.Content);
-            Sprite sprite = _resourceLoader.Load<Sprite>(ItemsPath + itemData.Id);
-
-            item.SetShopItem(sprite, itemData.Id, itemData.Price, TryToBuy, Select);
-
-            switch (itemData.State)
-            {
-                case ItemState.Purchased:
-                    item.SetPurchased();
-                    break;
-                case ItemState.OnSale:
-                    item.SetOnSale();
-                    break;
-                case ItemState.InUse:
-                    item.SetInUse();
-                    _currentItem = itemData.Id;
-                    break;
-            }
-
-            return item;
-        }
 
         private void TryToBuy(int id)
         {
-            // int price = DataService.PlayerData.Items.Items[id].Price;
-            //
-            // if (DataService.PlayerData.Coins.Value >= price)
-            // {
-            //     DataService.PlayerData.Coins.Remove(price);
-            //     DataService.PlayerData.Items.Purchased(id);
-            //
-            //     _items[id].SetPurchased();
-            // }
+            var effectsData = DataService.PlayerData.Effects;
+            var price = effectsData[id].Price[effectsData[id].Level];
+            var coins = DataService.PlayerData.Coins;
+
+            if (coins.Value >= price)
+            {
+                coins.Remove(price);
+                effectsData[id].Level++;
+                RefreshEffects();
+            }
         }
 
-        private void Select(int id)
+        private void RefreshEffects()
         {
-            // DataService.PlayerData.Items.Select(id);
-            //
-            // _items[_currentItem].SetPurchased();
-            //
-            // _currentItem = id;
-            // _items[_currentItem].SetInUse();
+            var effectsData = DataService.PlayerData.Effects;
+            
+            for (var i = 0; i < View.Effects.Length; i++)
+            {
+                int effectsLevel = effectsData[i].Level;
+                View.Effects[i].SetDuration(effectsData[i].Durations[effectsLevel]);
+                View.Effects[i].SetPrice(effectsData[i].Price[effectsLevel]);
+                View.Effects[i].SetLevel(effectsLevel+1);
+            }
         }
     }
 }

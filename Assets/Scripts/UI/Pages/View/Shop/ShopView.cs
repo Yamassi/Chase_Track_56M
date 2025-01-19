@@ -1,12 +1,12 @@
 using Orion.UI.Pages.Presenters;
-using UnityEngine;
 
 namespace Orion.UI.Pages.View.Shop
 {
     public class ShopView : ViewBase, IView<ShopView>
     {
+        public EffectItem[] Effects;
         private IPresenter<ShopView> _presenter;
-        public Transform Content;
+
         public override void Initialize()
         {
             _presenter = DiContainer.Instantiate<ShopPresenter>();

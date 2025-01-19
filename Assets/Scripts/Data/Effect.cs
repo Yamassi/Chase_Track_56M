@@ -3,14 +3,14 @@ using System;
 namespace Orion.Data
 {
     [Serializable]
-    public class Effect
+    public class EffectData
     {
         public int Level;
         public int MaxLevel;
         public int[] Price;
         public int[] Durations;
 
-        public Effect(int[] price, int[] durations)
+        public EffectData(int[] price, int[] durations)
         {
             Level = 0;
             MaxLevel = 4;

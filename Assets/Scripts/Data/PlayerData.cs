@@ -8,9 +8,7 @@ namespace Orion.Data
         public ResourceData Coins;
         public ItemsData Characters;
         public int BestScore;
-        public Effect Lighting;
-        public Effect Shield;
-        public Effect Fire;
+        public EffectData[] Effects;
         public LevelsData Levels;
         public TasksData Missions;
         

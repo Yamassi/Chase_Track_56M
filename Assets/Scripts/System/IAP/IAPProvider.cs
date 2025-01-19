@@ -26,6 +26,14 @@ namespace Orion.System.IAP
             {
                 _dataService.PlayerData.Characters.SelectWithRefresh(4);
             }
+            if (product.definition.id == IAPNames.Coin1000)
+            {
+                _dataService.PlayerData.Coins.Add(1000);
+            }
+            if (product.definition.id == IAPNames.Coin5200)
+            {
+                _dataService.PlayerData.Coins.Add(5200);
+            }
         }
     }
 }
