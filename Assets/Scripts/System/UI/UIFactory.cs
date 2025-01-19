@@ -1,7 +1,5 @@
 using Orion.Data;
 using Orion.StaticData;
-using Orion.UI;
-using Orion.UI.Pages;
 using Orion.UI.Pages.View;
 using UnityEngine;
 using Zenject;
@@ -42,12 +40,27 @@ namespace Orion.System.UI
             _currentView = view;
         }
 
-        public void CreateModalWindow(PageId pageId)
+        public async void CreateModalWindow(PageId pageId)
         {
             PageConfig pageConfig = _pageService.GetPage(pageId);
             ViewBase view = _diContainer.InstantiatePrefab(pageConfig.Prefab, transform).GetComponent<ViewBase>();
+            var inPage =  view.GetComponent<ITransitionable>();
+            inPage.PreInitialize();
+            
             view.Initialize();
+            await inPage.TransitionIn();
             view.SubscribeUpdates();
         }
+
+        public async void CloseModalWindow(GameObject gameObject)
+        {
+            if (gameObject != null)
+            {
+                var outPage =  gameObject.GetComponent<ITransitionable>();
+                await outPage.TransitionOut();
+                Destroy(gameObject);
+            }
+        }
+
     }
 }

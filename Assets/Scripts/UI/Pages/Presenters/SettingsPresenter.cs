@@ -18,9 +18,11 @@ namespace Orion.UI.Pages.Presenters
         }
         public override void Clear()
         {
-            
+            View.Close.onClick.RemoveAllListeners();
+            View.Music.Button.onClick.RemoveAllListeners();
+            View.Sound.Button.onClick.RemoveAllListeners();
         }
-        private void Close() => GameObject.Destroy(View.gameObject);
+        private void Close() => UIFactory.CloseModalWindow(View.gameObject);
         private void SwitchMusic() => View.Music.Toggle(AudioService.ToggleMusic());
         private void SwitchSound() => View.Sound.Toggle(AudioService.ToggleSound());
     }

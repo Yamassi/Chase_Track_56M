@@ -12,6 +12,7 @@ namespace Orion.Data
         public Effect Shield;
         public Effect Fire;
         public LevelsData Levels;
+        public TasksData Missions;
         
         public float Music;
         public float Sound;

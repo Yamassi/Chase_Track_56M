@@ -3,14 +3,13 @@ using UnityEngine.UI;
 
 namespace Orion.UI.Pages.View
 {
-    public class LevelsView : ViewBase,IView<LevelsView>
+    public class GameModeView : ViewBase, IView<GameModeView>
     {
-        public Button Close;
-        public LevelsItem[] Levels;
-        private IPresenter<LevelsView> _presenter;
+        public Button Infinity;
+        private IPresenter<GameModeView> _presenter;
         public override void Initialize()
         {
-            _presenter = DiContainer.Instantiate<LevelsPresenter>();
+            _presenter = DiContainer.Instantiate<GameModePresenter>();
             _presenter.Initialize(this);
         }
 
@@ -23,6 +22,6 @@ namespace Orion.UI.Pages.View
         {
             _presenter.Clear();
         }
-        public LevelsView GetView() => this;
+        public GameModeView GetView() => this;
     }
 }

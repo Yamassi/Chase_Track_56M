@@ -4,6 +4,7 @@ namespace Orion.UI.Pages.View
 {
     public class MissionsView : ViewBase,IView<MissionsView>
     {
+        public MissionsItem[] Missions;
         private IPresenter<MissionsView> _presenter;
         public override void Initialize()
         {

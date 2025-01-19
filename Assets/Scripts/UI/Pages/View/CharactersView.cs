@@ -1,9 +1,14 @@
 using Orion.UI.Pages.Presenters;
+using TMPro;
+using UnityEngine.UI;
 
 namespace Orion.UI.Pages.View
 {
     public class CharactersView : ViewBase, IView<CharactersView>
     {
+        public TextMeshProUGUI Name, Price;
+        public Image Character;
+        public Button Prev, Next, Buy, IapBuy;
         private IPresenter<CharactersView> _presenter;
         public override void Initialize()
         {

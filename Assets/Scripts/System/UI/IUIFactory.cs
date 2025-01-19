@@ -1,4 +1,5 @@
 using Orion.StaticData;
+using UnityEngine;
 
 namespace Orion.System.UI
 {
@@ -6,5 +7,6 @@ namespace Orion.System.UI
     {
         void ChangePage(PageId pageId);
         void CreateModalWindow(PageId pageId);
+        void CloseModalWindow(GameObject gameObject);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Orion.Data;
@@ -17,10 +18,17 @@ namespace Orion.UI.Pages.Presenters
 
             AudioService.PlayMenuMusic();
             
-            _currentCharacter = DataService.PlayerData.Characters.Current;
-           
+            _characters = DataService.PlayerData.Characters.Items
+                .Where(c => c.State == ItemState.Purchased || c.State == ItemState.InUse)
+                .ToList();
+            
+            var currentCharacter = _characters.FirstOrDefault(c => c.State == ItemState.InUse);
 
-            _characters = DataService.PlayerData.Characters.Items.Where(c => c.State == ItemState.Purchased || c.State == ItemState.InUse).ToList();
+            if (currentCharacter != null)
+            {
+                _currentCharacter = _characters.IndexOf(currentCharacter);
+            }
+                
             
             RefreshCharacter();
             View.Prev.onClick.AddListener(Prev);
@@ -52,6 +60,7 @@ namespace Orion.UI.Pages.Presenters
 
         public void RefreshCharacter()
         {
+            Debug.Log($"Refreshing character {_currentCharacter}");
             int currentCharacterId = _characters[_currentCharacter].Id;
             DataService.PlayerData.Characters.Select(currentCharacterId);
             View.Character.sprite = Resources.Load<Sprite>(ItemsPath + currentCharacterId);

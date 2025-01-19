@@ -7,14 +7,12 @@ namespace Orion.Data
     {
         public int Id;
         public TaskState State;
-        public string Description;
         public int Reward;
 
-        public TaskData(int id, TaskState state, string description, int reward)
+        public TaskData(int id, TaskState state, int reward)
         {
             Id = id;
             State = state;
-            Description = description;
             Reward = reward;
         }
     }

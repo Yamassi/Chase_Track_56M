@@ -10,12 +10,16 @@ namespace Orion.UI.Pages.View
     {
         [SerializeField] private Image[] _frames;
         [SerializeField] private Image[] _stars;
-        [SerializeField] private TextMeshProUGUI _name;
+        [SerializeField] private TextMeshProUGUI[] _name;
         [SerializeField] private Button _play;
         
         public void Initialize(int id, Action<int> onGet, int stars)
         {
-            _name.text = $"{id+1} Lvl";
+            for (var i = 0; i < _name.Length; i++)
+            {
+                _name[i].text = $"{id+1}";
+            }
+            
             
             _play.onClick.RemoveAllListeners();
             _play.onClick.AddListener(() => onGet?.Invoke(id));
