@@ -1,37 +1,22 @@
-using System;
 using Orion.StaticData;
-using Orion.System.Audio;
-using Orion.System.UI;
 using Orion.UI.Pages.View;
 using UniRx;
 using UnityEngine;
-using Zenject;
 
 namespace Orion.UI.Pages.Presenters
 {
-    public class BootPresenter : IPresenter<BootView>
+    public class BootPresenter : PagePresenter<BootView>
     {
         private CompositeDisposable _disposable;
-        private BootView _view;
-        private AudioService _audioService;
-        private IUIFactory _uiFactory;
-
-        [Inject]
-        public void Construct(AudioService audioService,
-            IUIFactory uiFactory)
+        
+        public override void Initialize(IView<BootView> view)
         {
-            _uiFactory = uiFactory;
-            _audioService = audioService;
-        }
-
-        public void Initialize(IView<BootView> view)
-        {
-            _view = view.GetView();
-            _audioService.PlayMenuMusic();
+            base.Initialize(view);
+            AudioService.PlayMenuMusic();
             StartLoading();
         }
 
-        public void Clear()
+        public override void Clear()
         {
             _disposable.Dispose();
         }
@@ -42,23 +27,23 @@ namespace Orion.UI.Pages.Presenters
 
             float time = 0;
             float loading = 0;
-            _view.Slider.maxValue = 100;
+            View.Slider.maxValue = 100;
 
             Observable.EveryUpdate().Subscribe(_ =>
             {
                 time += Time.deltaTime;
-                loading = _view.Curve.Evaluate(time / 3) * 100;
+                loading = View.Curve.Evaluate(time / 3) * 100;
 
                 if (loading >= 100)
                 {
                     loading = 100;
-                    _view.Slider.value = loading;
+                    View.Slider.value = loading;
                     _disposable.Clear();
 
-                    _uiFactory.ChangePage(PageId.MainMenu);
+                    UIFactory.ChangePage(PageId.MainMenu);
                 }
 
-                _view.Slider.value = loading;
+                View.Slider.value = loading;
             }).AddTo(_disposable);
         }
     }

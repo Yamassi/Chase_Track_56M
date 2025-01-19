@@ -17,7 +17,7 @@ namespace Orion.UI.Pages.View.Shop
         {
         }
 
-        public override void Clean()
+        public override void Clear()
         {
         }
         

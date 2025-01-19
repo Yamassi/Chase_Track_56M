@@ -4,7 +4,6 @@ using Orion.System.Audio;
 using Orion.System.UI;
 using UnityEngine;
 using Zenject;
-using NotImplementedException = System.NotImplementedException;
 
 namespace Orion.UI.Pages.View
 {
@@ -32,7 +31,7 @@ namespace Orion.UI.Pages.View
 
         public abstract void SubscribeUpdates();
 
-        public abstract void Clean();
+        public abstract void Clear();
 
         public void PreInitialize()
         {
@@ -47,6 +46,6 @@ namespace Orion.UI.Pages.View
 
         public async Task TransitionOut() => 
             await Transitions.TransitionOut(TransitionElements);
-        private void OnDisable() => Clean();
+        private void OnDisable() => Clear();
     }
 }

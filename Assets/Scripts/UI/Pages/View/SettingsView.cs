@@ -21,7 +21,7 @@ namespace Orion.UI.Pages.View
             
         }
 
-        public override void Clean()
+        public override void Clear()
         {
             _presenter.Clear();
         }

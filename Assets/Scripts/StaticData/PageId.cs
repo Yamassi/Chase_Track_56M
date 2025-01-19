@@ -8,5 +8,10 @@ namespace Orion.StaticData
         Settings = 3,
         Shop = 4,
         Game = 5,
+        Info = 6,
+        Characters = 7,
+        DailyRewards = 8,
+        Missions = 9,
+        Levels = 10,
     }
 }

@@ -11,7 +11,7 @@ namespace Orion.UI.Pages.View
         {
             for (int i = 0; i < elements.Length; i++)
             {
-                await elements[i].gameObject.transform.DOScale(1, 0.2f).SetEase(Ease.OutBack).SetUpdate(true);
+                await elements[i].gameObject.transform.DOScale(1, 0.1f).SetEase(Ease.OutBack).SetUpdate(true);
             }
         }
         public static async Task TransitionOut(GameObject[] elements)

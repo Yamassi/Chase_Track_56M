@@ -5,7 +5,8 @@ namespace Orion.UI.Pages.View
 {
     public class MainMenuView : ViewBase, IView<MainMenuView>
     {
-        public Button Play;
+        public Image Character;
+        public Button Prev,Next;
         private IPresenter<MainMenuView> _presenter;
         public override void Initialize()
         {
@@ -17,7 +18,7 @@ namespace Orion.UI.Pages.View
         {
         }
 
-        public override void Clean()
+        public override void Clear()
         {
             _presenter.Clear();
         }

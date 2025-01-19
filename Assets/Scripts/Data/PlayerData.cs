@@ -6,7 +6,12 @@ namespace Orion.Data
     public class PlayerData
     {
         public ResourceData Coins;
-        public ItemsData Items;
+        public ItemsData Characters;
+        public int BestScore;
+        public Effect Lighting;
+        public Effect Shield;
+        public Effect Fire;
+        public LevelsData Levels;
         
         public float Music;
         public float Sound;

@@ -6,14 +6,14 @@ namespace Orion.UI.Pages.View.GamePlayUI
 {
     public class GameView : ViewBase, IView<GameView>
     {
-        private IPresenter<GameView> _presenter;
         public Button Pause;
         public TextMeshProUGUI ScoreTxt;
-
+        private IPresenter<GameView> _presenter;
         public override void Initialize()
         {
             _presenter = DiContainer.Instantiate<GamePresenter>();
             _presenter.Initialize(this);
+            
             AudioService.PlayGamePlayMusic();
         }
 
@@ -21,8 +21,9 @@ namespace Orion.UI.Pages.View.GamePlayUI
         {
         }
 
-        public override void Clean()
+        public override void Clear()
         {
+            _presenter.Clear();
         }
 
         public GameView GetView() => this;
