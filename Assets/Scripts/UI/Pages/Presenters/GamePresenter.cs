@@ -30,14 +30,23 @@ namespace Orion.UI.Pages.Presenters
             
             View.Pause.onClick.AddListener(CreatePauseWindow);
 
-            _gamePlayController.Initialize();
+            _gamePlayController.Initialize(GetCoin,Enemy);
         }
 
         public override void Clear()
         {
             
         }
-        
+
+        private void GetCoin()
+        {
+            
+        }
+
+        private void Enemy()
+        {
+            
+        }
         private void Restart()
         {
             _gamePlayController.Clear();
