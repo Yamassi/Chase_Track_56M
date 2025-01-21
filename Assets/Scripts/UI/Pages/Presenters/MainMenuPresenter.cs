@@ -60,7 +60,6 @@ namespace Orion.UI.Pages.Presenters
 
         public void RefreshCharacter()
         {
-            Debug.Log($"Refreshing character {_currentCharacter}");
             int currentCharacterId = _characters[_currentCharacter].Id;
             DataService.PlayerData.Characters.Select(currentCharacterId);
             View.Character.sprite = Resources.Load<Sprite>(ItemsPath + currentCharacterId);

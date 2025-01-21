@@ -7,7 +7,7 @@ namespace Orion.UI.Pages.View.GamePlayUI
     public class GameView : ViewBase, IView<GameView>
     {
         public Button Pause;
-        public TextMeshProUGUI Time;
+        public TextMeshProUGUI Time,Coins;
         public Image[] Hearts;
         public Button Down, Up;
         private IPresenter<GameView> _presenter;

@@ -93,7 +93,7 @@ namespace Orion.GamePlay
             for (var i = 0; i < points.Count; i++)
             {
                 
-                if (i != points.Count - 1)
+                if (i != points.Count - 1 && i != points.Count - 2 && i != 0)
                 {
                     RandomPoint(points[i], points[i + 1],false);
                     
@@ -102,7 +102,8 @@ namespace Orion.GamePlay
 
                 if (i == points.Count - 1)
                 {
-                    _final = Instantiate(_finalPrefab, points[i], Quaternion.identity);
+                    var offset = new Vector3(-3, 0, 0);
+                    _final = Instantiate(_finalPrefab, points[i]+offset, Quaternion.identity);
                 }
                     
             }

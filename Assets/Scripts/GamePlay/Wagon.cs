@@ -10,8 +10,13 @@ namespace Orion.GamePlay
         public bool IsReversed {get; private set;}
         [SerializeField] private float _speed;
         [SerializeField] private Rigidbody2D[] _wheels;
+        [SerializeField] private FireDestroyer _fire;
         private Rigidbody2D _rigidbody;
         private Action _onFinished;
+        private Action _onCoin;
+        private Action _onEnemy;
+        private Action<int> _onEffect;
+        private EffectsDuration _effectsDuration;
 
         private void Awake()
         {
@@ -19,8 +24,12 @@ namespace Orion.GamePlay
             IsReversed = false;
         }
 
-        public void Initialize(Action onFinished, Action onCoin, Action onEnemy)
+        public void Initialize(Action onFinished, Action onCoin, Action onEnemy, Action<int> onEffect,EffectsDuration effectsDuration)
         {
+            _effectsDuration = effectsDuration;
+            _onEffect = onEffect;
+            _onEnemy = onEnemy;
+            _onCoin = onCoin;
             _onFinished = onFinished;
         }
 
@@ -40,35 +49,39 @@ namespace Orion.GamePlay
         {
             float reversePosDistance = 1.5f;
             Vector3 position;
-            Vector3 rotation;
+            Quaternion rotation;
             int gravity;
             if (IsReversed)
             {
                 position = new Vector3(transform.position.x, transform.position.y+reversePosDistance, transform.position.z);
-                rotation = Vector3.zero;
+                rotation = Quaternion.Euler(0, 0, 0);
                 gravity = 1;
             }
             else
             {
                 position = new Vector3(transform.position.x, transform.position.y-reversePosDistance, transform.position.z);
-                rotation = new Vector3(0,0,180);
+                rotation = Quaternion.Euler(0, 0, 180);
                 gravity = -1;
             }
             
             transform.position = position;
-            transform.rotation = Quaternion.Euler(rotation);
+            transform.rotation = rotation;
+            
+            Vector2 velocity = _rigidbody.velocity;
+            _rigidbody.velocity = new Vector2(velocity.x, velocity.y * -1); 
 
             _rigidbody.gravityScale = gravity;
             _rigidbody.angularVelocity = 0f;
-            
-            
-            IsReversed = !IsReversed;
-            
+
             foreach (var wheel in _wheels)
             {
-               wheel.gravityScale = gravity;
-               wheel.angularVelocity = 0f;
+                wheel.gravityScale = gravity;
+                wheel.angularVelocity = 0f;
             }
+
+            IsReversed = !IsReversed;
+            
+            _fire.transform.localRotation = Quaternion.Euler(0, IsReversed ? 180:0, 56);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -80,7 +93,32 @@ namespace Orion.GamePlay
 
             if (other.TryGetComponent(out Coin coin))
             {
-                
+                _onCoin?.Invoke();
+                coin.Recycle();
+            }
+            
+            if (other.TryGetComponent(out Enemy enemy))
+            {
+                _onEnemy?.Invoke();
+            }
+            
+            if (other.TryGetComponent(out Lighting lighting))
+            {
+                _onEffect?.Invoke(0);
+                lighting.Recycle();
+            }
+            
+            if (other.TryGetComponent(out Shield shield))
+            {
+                _onEffect?.Invoke(1);
+                shield.Recycle();
+            }
+            
+            if (other.TryGetComponent(out Fire fire))
+            {
+                _onEffect?.Invoke(2);
+                fire.Recycle();
+                _fire.Fire(_effectsDuration.FireDuration);
             }
         }
     }

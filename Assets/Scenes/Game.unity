@@ -2337,7 +2337,7 @@ Transform:
   m_GameObject: {fileID: 907887997}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2490,7 +2490,7 @@ EdgeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 3, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0.3
   m_Points: []
   m_AdjacentStartPoint: {x: 1, y: 0}
@@ -2995,7 +2995,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4799283715547649762, guid: 770d8da7dafe54f8a8803a8bec3b2af9, type: 3}
+    - target: {fileID: 5769803547098224960, guid: 770d8da7dafe54f8a8803a8bec3b2af9, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

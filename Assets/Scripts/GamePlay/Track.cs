@@ -34,13 +34,14 @@ namespace Orion.GamePlay
 
             RefreshEdgeCollider();
         }
-        [Button]
+
         public void ClearTracks()
         {
             _startPosition = transform.position;
-            LineRenderer.positionCount = 1;
-            Vector3 offset = new Vector3(-3, 0, 0);
+            LineRenderer.positionCount = 2;
+            Vector3 offset = new Vector3(-6, 0, 0);
             LineRenderer.SetPosition(0, _previousPosition+offset);
+            LineRenderer.SetPosition(1, _previousPosition);
         }
 
         private void GenerateTrack()
