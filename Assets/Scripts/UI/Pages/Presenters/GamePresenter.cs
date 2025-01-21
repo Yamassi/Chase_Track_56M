@@ -67,6 +67,7 @@ namespace Orion.UI.Pages.Presenters
 
         public override void Clear()
         {
+            Time.timeScale = 1;
             if (_timer != null)
             {
                 _timer.StopTimer();
@@ -105,13 +106,25 @@ namespace Orion.UI.Pages.Presenters
             }
         }
 
+        private void SetBestScore()
+        {
+            var bestScore = DataService.PlayerData.BestScore;
+            if (_coins > bestScore)
+                DataService.PlayerData.BestScore = _coins;
+        }
+
         private void Win()
         {
-            Debug.Log("Win");
+            SetBestScore();
+            DataService.PlayerData.Coins.Add(_coins);
+            CreateWinWindow(_coins,_hearts);
         }
+
         private void GameOver()
         {
-            Debug.Log("Game Over");
+            SetBestScore();
+            DataService.PlayerData.Coins.Add(_coins);
+            CreateLoseWindow(_coins);
         }
 
         private void GetCoin()
@@ -124,7 +137,7 @@ namespace Orion.UI.Pages.Presenters
         {
             _hearts--;
             RefreshHearts();
-Debug.Log("Enemy hit");
+
             if (_hearts <= 0)
             {
                 GameOver();
@@ -142,6 +155,11 @@ Debug.Log("Enemy hit");
             UIFactory.ChangePage(PageId.MainMenu);
         }
 
+        private void NextLevel()
+        {
+            DataService.PlayerData.Levels.OpenNextLevel();
+            UIFactory.ChangePage(PageId.MainMenu);
+        }
         private async void CreatePauseWindow()
         {
             var pause = _resourceFactory.Instantiate<Pause>(PausePath, View.transform);
@@ -149,12 +167,12 @@ Debug.Log("Enemy hit");
             await pause.TransitionIn();
         }
 
-        private async void CreateWinWindow(int score, int rewardCoins)
+        private async void CreateWinWindow(int score, int crowns)
         {
             var win = _resourceFactory.Instantiate<Win>(WinPath,View.transform);
             win.PreInitialize();
-            win.Initialize(Restart, Exit);
-            win.SetResults(score, rewardCoins);
+            win.Initialize(Restart, Exit,NextLevel);
+            win.SetResults(score, crowns);
             await win.TransitionIn();
             AudioService.Win();
         }
