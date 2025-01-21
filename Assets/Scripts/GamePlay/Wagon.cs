@@ -1,4 +1,7 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -17,6 +20,8 @@ namespace Orion.GamePlay
         private Action _onEnemy;
         private Action<int> _onEffect;
         private EffectsDuration _effectsDuration;
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private bool _isShieldActive;
 
         private void Awake()
         {
@@ -31,6 +36,16 @@ namespace Orion.GamePlay
             _onEnemy = onEnemy;
             _onCoin = onCoin;
             _onFinished = onFinished;
+        }
+
+        private void OnDestroy()
+        {
+            if (_cts != null)
+            {
+                _cts.Cancel();
+                _cts.Dispose();
+                _cts = null;
+            }
         }
 
         private void FixedUpdate()
@@ -99,19 +114,21 @@ namespace Orion.GamePlay
             
             if (other.TryGetComponent(out Enemy enemy))
             {
-                _onEnemy?.Invoke();
+                if (!_isShieldActive)
+                    _onEnemy?.Invoke();
             }
             
             if (other.TryGetComponent(out Lighting lighting))
             {
                 _onEffect?.Invoke(0);
                 lighting.Recycle();
+                Lighting();
             }
             
             if (other.TryGetComponent(out Shield shield))
             {
                 _onEffect?.Invoke(1);
-                shield.Recycle();
+                Shield(shield);
             }
             
             if (other.TryGetComponent(out Fire fire))
@@ -120,6 +137,22 @@ namespace Orion.GamePlay
                 fire.Recycle();
                 _fire.Fire(_effectsDuration.FireDuration);
             }
+        }
+
+        private async void Shield(Shield shield)
+        {
+            shield.Recycle();
+            _isShieldActive = true;
+            await UniTask.Delay(_effectsDuration.ShieldDuration * 1000);
+            _isShieldActive = false;
+        }
+
+        private async void Lighting()
+        {
+            var oldSpeed = _speed;
+            _speed = 8;
+            await UniTask.Delay(_effectsDuration.LightingDuration * 1000);
+            _speed = 6;
         }
     }
 }
