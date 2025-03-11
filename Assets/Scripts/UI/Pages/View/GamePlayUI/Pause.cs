@@ -3,6 +3,7 @@ using Orion.System.Audio;
 using Orion.UI.Elements;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Orion.UI.Pages.View.GamePlayUI
 {
@@ -12,6 +13,12 @@ namespace Orion.UI.Pages.View.GamePlayUI
         [SerializeField] private Button _restart, _exit;
         [SerializeField] private ToggleButton _sound, _music;
         private AudioService _audioService;
+
+        [Inject]
+        public void Construct(AudioService audioService)
+        {
+            _audioService = audioService;
+        }
 
         public void Initialize(Action onRestart, Action onExit)
         {
